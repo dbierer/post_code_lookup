@@ -1,0 +1,18 @@
+version: "3"
+services:
+  laravel_demo:
+    container_name: post_code_lookup
+    hostname: postcode.local
+    image: images/post_code_lookup
+    volumes:
+     - ".:/home/vagrant"
+    ports:
+     - "8008:80"
+     - "8080:8080"
+    build: ./docker
+    restart: always
+    networks:
+      - network
+networks:
+    network:
+        driver: bridge
