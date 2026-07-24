@@ -51,7 +51,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } else {
         try {
             $driver = strtolower(trim($config['db']['DRIVER'] ?? 'mysql'));
-            $postcode = PostCodeBase::getClass($driver);
+            $postCode = PostCodeBase::getClass($driver, $config);
             $results = $postCode->lookup(
                 $searchedField,
                 $searchedValue,

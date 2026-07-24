@@ -10,3 +10,4 @@ echo "Installing PHP extensions ..."
 /usr/local/bin/zendphpctl ext install dom
 /usr/local/bin/zendphpctl ext install mbstring
 /usr/local/bin/zendphpctl ext install zip
+/usr/local/bin/zendphpctl ext install sqlite3

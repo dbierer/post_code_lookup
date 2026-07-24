@@ -5,10 +5,7 @@ RUN chmod +x /tmp/*.sh
 RUN \
     echo "Installing misc tools ..." && \
     apt-get update && \
-    apt-get install -y nano less vim net-tools wget unzip apt-utils tree curl git
-RUN \
-    echo "Installing Mariadb (MySQL open source equivalent) ..." && \
-    /tmp/install_mysql.sh
+    apt-get install -y nano less vim net-tools wget unzip apt-utils tree curl git sqlite3
 RUN \
     echo "Installing nginx ..." && \
     apt-get install -y nginx
@@ -18,9 +15,6 @@ RUN \
 RUN \
     echo "Adding/enabling PHP extensions ..." && \
     /tmp/install_php_ext.sh
-RUN \
-    echo "Installing Composer ..." && \
-    /tmp/install_composer.sh
 RUN \
     echo "Installing Adminer (phpMyAdmin equivalent) ..." && \
     /tmp/install_adminer.sh

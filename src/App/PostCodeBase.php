@@ -41,7 +41,7 @@ abstract class PostCodeBase
      *
      * The schema is based on the tab-delimited GeoNames postal code file layout.
      */
-    public asbtract function createTable(): void;
+    public abstract function createTable(): void;
     
     /**
      * Checks to see if TABLE exists
@@ -52,7 +52,7 @@ abstract class PostCodeBase
      * Returns the appropriate PostCode class based upon the value of "driver"
      *
      */
-    public static function getClass(string $driver) : self
+    public static function getClass(string $driver, array $config) : self
     {
         return match ($driver) {
             'sqlite', 'sqlite3' => new PostCodeSQLite($config),

@@ -16,7 +16,7 @@ try {
         throw new RuntimeException('This script must be run from the command line.');
     }
     $driver = strtolower(trim($config['db']['DRIVER'] ?? 'sqlite'));
-    $postcode = PostCodeBase::getClass($driver);
+    $postcode = PostCodeBase::getClass($driver, $config);
     $iso2 = trim(strtoupper(strip_tags($argv[1] ?? 'US')));
     $dataDir = __DIR__ . '/../data/';
     $filePath = $dataDir . strtoupper($iso2) . '.txt';
