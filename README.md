@@ -4,8 +4,8 @@ Provides a simple PHP-based post code lookup site that uses Geonames post code d
 ## Adminer Database Manager
 * The installation installs `adminer.php` [https://adminer.org].
 * The `public/admin` directory is password protected, using:
-  * User: `admin`
-  * Password: `SECRET`
+  * User: look for `ADMINER_USR` in `docker/secrets.sh`
+  * Password: look for `ADMINER_PWD` in `docker/secrets.sh`
 * Default database credentials are found in `docker/secrets.sh`
 
 

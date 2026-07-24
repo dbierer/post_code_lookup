@@ -1,6 +1,13 @@
 <?php
-require_once __DIR__ . '/PostCode.php';
+// error handling
+ini_set('display_errors', 0);
+error_reporting(E_ALL);
+error_log(__DIR__ . '/../data/error.log');
+// load classes
+require __DIR__ . '/../src/autoload.php';
+use App\PostCodeBase;
 use App\PostCode;
+use App\PostCodeSQLite;
 $config = require(__DIR__ . '/../config/config.php');
 $usage = 'php ' . basename(__FILE__) . ' [ISO2]' . PHP_EOL
        . '    ISO2 : 2 character country code (default "US")' . PHP_EOL;
@@ -8,7 +15,8 @@ try {
     if (PHP_SAPI !== 'cli') {
         throw new RuntimeException('This script must be run from the command line.');
     }
-    $postcode = new PostCode($config);
+    $driver = strtolower(trim($config['db']['DRIVER'] ?? 'sqlite'));
+    $postcode = PostCodeBase::getClass($driver);
     $iso2 = trim(strtoupper(strip_tags($argv[1] ?? 'US')));
     $dataDir = __DIR__ . '/../data/';
     $filePath = $dataDir . strtoupper($iso2) . '.txt';

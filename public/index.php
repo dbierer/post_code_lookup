@@ -1,6 +1,8 @@
 <?php
-require_once __DIR__ . '/../src/PostCode.php';
+require __DIR__ . '/../src/autoload.php';
+use App\PostCodeBase;
 use App\PostCode;
+use App\PostCodeSQLite;
 $config = require __DIR__ . '/../config/config.php';
 
 $fieldLabels = [
@@ -48,7 +50,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $error = 'Enter an additional lookup value.';
     } else {
         try {
-            $postCode = new PostCode($config);
+            $driver = strtolower(trim($config['db']['DRIVER'] ?? 'mysql'));
+            $postcode = PostCodeBase::getClass($driver);
             $results = $postCode->lookup(
                 $searchedField,
                 $searchedValue,
