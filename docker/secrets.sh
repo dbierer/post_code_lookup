@@ -20,3 +20,4 @@ export CONTAINER=post_code_lookup
 export CONTAINER_IP="10.10.99.10"
 export CONTAINER_SUBNET="10.10.99.0/24"
 export CONTAINER_GATEWAY="10.10.99.1"
+export AWS_PHP_VER="8.1"
