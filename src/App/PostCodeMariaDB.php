@@ -12,7 +12,7 @@ use Throwable;
  *
  * Data format reference: ./data/readme.txt from the GeoNames postal code dump.
  */
-class PostCode extends PostCodeBase
+class PostCodeMariaDB extends PostCodeBase
 {
     public function __construct(public array $config)
     {

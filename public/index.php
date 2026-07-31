@@ -1,8 +1,9 @@
 <?php
 require __DIR__ . '/../src/autoload.php';
 use App\PostCodeBase;
-use App\PostCode;
+use App\PostCodeMariaDB;
 use App\PostCodeSQLite;
+use App\PostCodePgSQL;
 $config = require __DIR__ . '/../config/config.php';
 
 $fieldLabels = [

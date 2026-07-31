@@ -8,14 +8,16 @@ require __DIR__ . '/../src/autoload.php';
 use App\PostCodeBase;
 use App\PostCode;
 use App\PostCodeSQLite;
+use App\PostCodePgSQL;
 $config = require(__DIR__ . '/../config/config.php');
 $usage = 'php ' . basename(__FILE__) . ' [ISO2] [DRIVER]' . PHP_EOL
-       . '    ISO2 : 2 character country code (default "US")' . PHP_EOL;
+       . '    ISO2 : 2 character country code (default "US")' . PHP_EOL
+       . '    DRIVER : mariadb | sqlite | pgsql (default from config/config.php)' . PHP_EOL;
 try {
     if (PHP_SAPI !== 'cli') {
         throw new RuntimeException('This script must be run from the command line.');
     }
-    $driver = strtolower(trim($config['db']['DRIVER'] ?? PostCodeBase::DEFAULT_DRIVER));
+    $driver = strtolower(trim(strip_tags($argv[2] ?? $config['db']['DRIVER'] ?? PostCodeBase::DEFAULT_DRIVER)));
     $postcode = PostCodeBase::getClass($driver, $config);
     $iso2 = trim(strtoupper(strip_tags($argv[1] ?? 'US')));
     $dataDir = __DIR__ . '/../data/';

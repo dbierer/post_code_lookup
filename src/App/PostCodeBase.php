@@ -56,9 +56,21 @@ abstract class PostCodeBase
     {
         return match ($driver) {
             'sqlite', 'sqlite3' => new PostCodeSQLite($config),
-            'mysql', 'mariadb' => new PostCode($config),
+            'mysql', 'mariadb' => new PostCodeMariaDB($config),
+            'pgsql', 'postgres', 'postgresql' => new PostCodePgSQL($config),
             default => throw new RuntimeException(sprintf('Unsupported DB driver: %s', $driver)),
         };
+    }
+
+    /**
+     * Quotes a table or column identifier for use in a raw SQL fragment.
+     *
+     * Backtick quoting works for MySQL/MariaDB/SQLite; PostgreSQL requires
+     * double quotes, so PostCodePgSQL overrides this method.
+     */
+    protected function quoteIdentifier(string $identifier): string
+    {
+        return sprintf('`%s`', $identifier);
     }
     
     /**
@@ -76,36 +88,28 @@ abstract class PostCodeBase
             throw new RuntimeException(sprintf('GeoNames postcode file is not readable: %s', $filePath));
         }
 
+        $insertColumns = [
+            'country_code',
+            'postal_code',
+            'place_name',
+            'admin_name1',
+            'admin_code1',
+            'admin_name2',
+            'admin_code2',
+            'admin_name3',
+            'admin_code3',
+            'latitude',
+            'longitude',
+            'accuracy',
+        ];
+
         $statement = $this->pdo->prepare(
-            <<<'SQL'
-INSERT INTO `postcode` (
-    `country_code`,
-    `postal_code`,
-    `place_name`,
-    `admin_name1`,
-    `admin_code1`,
-    `admin_name2`,
-    `admin_code2`,
-    `admin_name3`,
-    `admin_code3`,
-    `latitude`,
-    `longitude`,
-    `accuracy`
-) VALUES (
-    :country_code,
-    :postal_code,
-    :place_name,
-    :admin_name1,
-    :admin_code1,
-    :admin_name2,
-    :admin_code2,
-    :admin_name3,
-    :admin_code3,
-    :latitude,
-    :longitude,
-    :accuracy
-)
-SQL
+            sprintf(
+                'INSERT INTO %s (%s) VALUES (%s)',
+                $this->quoteIdentifier(self::TABLE_NAME),
+                implode(', ', array_map(fn (string $column): string => $this->quoteIdentifier($column), $insertColumns)),
+                implode(', ', array_map(static fn (string $column): string => ':' . $column, $insertColumns)),
+            ),
         );
 
         $file = new SplFileObject($filePath, 'r');
@@ -174,7 +178,7 @@ SQL
         mixed $secondSearchData = null,
         string $logicalOperator = 'AND',
     ): array {
-        $tableName = self::TABLE_NAME;
+        $tableName = $this->quoteIdentifier(self::TABLE_NAME);
 
         [$whereClause, $bindings] = $this->buildCondition($fieldName, $searchData, 'search_data');
 
@@ -196,7 +200,7 @@ SQL
         }
 
         $statement = $this->pdo->prepare(
-            sprintf('SELECT * FROM `%s` WHERE %s', $tableName, $whereClause),
+            sprintf('SELECT * FROM %s WHERE %s', $tableName, $whereClause),
         );
         $statement->execute($bindings);
 
@@ -210,13 +214,13 @@ SQL
      */
     protected function buildCondition(string $fieldName, mixed $searchData, string $paramName): array
     {
-        $columnName = $this->normalizeFieldName($fieldName);
+        $columnName = $this->quoteIdentifier($this->normalizeFieldName($fieldName));
 
         if ($searchData === null) {
-            return [sprintf('`%s` IS NULL', $columnName), []];
+            return [sprintf('%s IS NULL', $columnName), []];
         }
 
-        return [sprintf('`%s` = :%s', $columnName, $paramName), [$paramName => $searchData]];
+        return [sprintf('%s = :%s', $columnName, $paramName), [$paramName => $searchData]];
     }
 
     /**
