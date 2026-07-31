@@ -15,7 +15,7 @@ abstract class PostCodeBase
 {
     public const TABLE_NAME = 'postcode';
     public const EXPECTED_FIELD_COUNT = 12;
-
+    public const DEFAULT_DRIVER = 'sqlite';
     /**
      * @var array<string, string>
      */

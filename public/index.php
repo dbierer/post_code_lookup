@@ -50,7 +50,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $error = 'Enter an additional lookup value.';
     } else {
         try {
-            $driver = strtolower(trim($config['db']['DRIVER'] ?? 'mysql'));
+            $driver = strtolower(trim($config['db']['DRIVER'] ?? PostCodeBase::DEFAULT_DRIVER));
             $postCode = PostCodeBase::getClass($driver, $config);
             $results = $postCode->lookup(
                 $searchedField,

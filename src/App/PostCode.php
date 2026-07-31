@@ -8,6 +8,7 @@ use Throwable;
 
 /**
  * Creates and imports GeoNames postal code data.
+ * This class is designed for MariaDB or MySQL databases.
  *
  * Data format reference: ./data/readme.txt from the GeoNames postal code dump.
  */
@@ -15,17 +16,17 @@ class PostCode extends PostCodeBase
 {
     public function __construct(public array $config)
     {
-        $databaseName = trim($config['db']['DB_NAME'] ?? '');
+        $databaseName = trim($config['db']['mariadb']['DB_NAME'] ?? '');
 
         if ($databaseName === '') {
             throw new RuntimeException('Missing required environment variable: DB_NAME');
         }
 
-        $host      = $config['db']['DB_HOST'] ?? '127.0.0.1';
-        $port      = $config['db']['DB_PORT'] ?? '3306';
-        $username  = $config['db']['DB_USER'] ?? 'db_admin';
-        $password  = $config['db']['DB_PASSWORD'] ?? 'db_password';
-        $charset   = $config['db']['DB_CHARSET'] ?? 'utf8mb4';
+        $host      = $config['db']['mariadb']['DB_HOST'] ?? '127.0.0.1';
+        $port      = $config['db']['mariadb']['DB_PORT'] ?? '3306';
+        $username  = $config['db']['mariadb']['DB_USER'] ?? 'db_admin';
+        $password  = $config['db']['mariadb']['DB_PASSWORD'] ?? 'db_password';
+        $charset   = $config['db']['mariadb']['DB_CHARSET'] ?? 'utf8mb4';
 
         $dsn = sprintf(
             'mysql:host=%s;port=%s;dbname=%s;charset=%s',

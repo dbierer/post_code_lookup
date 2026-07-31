@@ -9,13 +9,13 @@ use App\PostCodeBase;
 use App\PostCode;
 use App\PostCodeSQLite;
 $config = require(__DIR__ . '/../config/config.php');
-$usage = 'php ' . basename(__FILE__) . ' [ISO2]' . PHP_EOL
+$usage = 'php ' . basename(__FILE__) . ' [ISO2] [DRIVER]' . PHP_EOL
        . '    ISO2 : 2 character country code (default "US")' . PHP_EOL;
 try {
     if (PHP_SAPI !== 'cli') {
         throw new RuntimeException('This script must be run from the command line.');
     }
-    $driver = strtolower(trim($config['db']['DRIVER'] ?? 'sqlite'));
+    $driver = strtolower(trim($config['db']['DRIVER'] ?? PostCodeBase::DEFAULT_DRIVER));
     $postcode = PostCodeBase::getClass($driver, $config);
     $iso2 = trim(strtoupper(strip_tags($argv[1] ?? 'US')));
     $dataDir = __DIR__ . '/../data/';

@@ -15,7 +15,7 @@ class PostCodeSQLite extends PostCodeBase
 {
     public function __construct(public array $config)
     {
-        $databasePath = trim($config['db']['DB_SQLITE_PATH'] ?? '');
+        $databasePath = trim($config['db']['sqlite']['DB_SQLITE_PATH'] ?? '');
 
         if ($databasePath === '') {
             throw new RuntimeException('Missing required environment variable: DB_SQLITE_PATH');
