@@ -1,4 +1,8 @@
 #!/bin/bash
+if [[ "$USER" <> "root" ]]; then
+    echo "You need to run this as root!"
+    exit 1
+fi
 cp docker/* /tmp/
 chmod +x /tmp/*.sh
 . /tmp/secrets.sh
