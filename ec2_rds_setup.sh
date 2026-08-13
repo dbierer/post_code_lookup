@@ -1,5 +1,5 @@
 #!/bin/bash
-if [[ "$USER" <> "root" ]]; then
+if [[ ! "$USER" = "root" ]]; then
     echo "You need to run this as root!"
     exit 1
 fi

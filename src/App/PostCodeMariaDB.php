@@ -14,9 +14,10 @@ use Throwable;
  */
 class PostCodeMariaDB extends PostCodeBase
 {
+    public string $db_name = '';
     public function __construct(public array $config)
     {
-        $databaseName = trim($config['db']['mariadb']['DB_NAME'] ?? '');
+        $this->db_name = trim($config['db']['mariadb']['DB_NAME'] ?? '');
 
         if ($databaseName === '') {
             throw new RuntimeException('Missing required environment variable: DB_NAME');
@@ -32,7 +33,7 @@ class PostCodeMariaDB extends PostCodeBase
             'mysql:host=%s;port=%s;dbname=%s;charset=%s',
             $host,
             $port,
-            $databaseName,
+            $this->db_name,
             $charset,
         );
 
@@ -54,8 +55,13 @@ class PostCodeMariaDB extends PostCodeBase
      */
     public function checkTable() : bool
     {
-        return $this->pdo->exec('SELECT COUNT(*) FROM information_schema.tables '
-                                . 'WHERE table_schema = DATABASE() AND table_name = `' . self::TABLE_NAME);
+        $sql = 'SELECT COUNT(*) FROM information_schema.tables '
+            . 'WHERE table_schema = \'' . $this->db_name . '\' '
+            . 'AND table_name = \'' . self::TABLE_NAME . '\';';
+        $stmt = $this->pdo->query($sql);
+        $found = (bool) ($stmt->rowCount() >= 1);
+        unset($stmt);
+        return $found;
     }
 
     /**
@@ -84,7 +90,7 @@ CREATE TABLE IF NOT EXISTS `postcode` (
     INDEX `idx_postcode_country_postal_code` (`country_code`, `postal_code`),
     INDEX `idx_postcode_postal_code` (`postal_code`),
     INDEX `idx_postcode_place_name` (`place_name`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 SQL;
 
         $this->pdo->exec($sql);
