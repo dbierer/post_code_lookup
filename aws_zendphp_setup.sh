@@ -1,14 +1,17 @@
 #!/bin/bash
 if [[ ! "$USER" = "root" ]]; then
-    echo "You need to run this as root (hint: `sudo zendphp_setup.sh`)"
+    echo "You need to run this as root (hint: `sudo aws_zendphp_setup.sh`)"
     exit 1;
 fi
 cp docker/* /tmp/
 chmod +x /tmp/*.sh
 . /tmp/secrets.sh
+echo "Installing required utilities ..."
+apt install zip
 echo "Adding/enabling PHP extensions ..."
 /usr/local/bin/zendphpctl ext-install sqlite3
 /usr/local/bin/zendphpctl ext-install pdo_sqlite
+/usr/local/bin/zendphpctl ext-install mysql
 echo "Copying files to /var/www/demo ..."
 mkdir /var/www/demo
 cp -r * /var/www/demo
@@ -20,7 +23,7 @@ ln -s -f /etc/nginx/sites-available/nginx.default.conf /etc/nginx/sites-enabled/
 /etc/init.d/nginx restart
 echo "Configuring PHP-FPM ..."
 sed -i "s/listen = \/run\/php\/php$AWS_PHP_VER-zend-fpm\.sock/listen\ \=\ 127\.0\.0\.1\:9000/g" /etc/php/$AWS_PHP_VER-zend/fpm/pool.d/www.conf
-/etc/init.d/php restart
+/etc/init.d/php"$AWS_PHP_VER"-zend-fpm restart
 echo "If you want to add additional countries to the postcode database, proceed as follows:"
 echo "    /var/www/demo/src/import_postcode.sh ISO2" 
 echo "    -- where 'ISO2' is the uppercase 2-digit country code"

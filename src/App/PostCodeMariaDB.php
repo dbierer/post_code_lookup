@@ -55,7 +55,7 @@ class PostCodeMariaDB extends PostCodeBase
     public function checkTable() : bool
     {
         return $this->pdo->exec('SELECT COUNT(*) FROM information_schema.tables '
-                                . 'WHERE table_schema = DATABASE() AND table_name = :table_name');
+                                . 'WHERE table_schema = DATABASE() AND table_name = `' . self::TABLE_NAME);
     }
 
     /**
