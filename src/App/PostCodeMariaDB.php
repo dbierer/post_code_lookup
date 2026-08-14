@@ -19,7 +19,7 @@ class PostCodeMariaDB extends PostCodeBase
     {
         $this->db_name = trim($config['db']['mariadb']['DB_NAME'] ?? '');
 
-        if ($databaseName === '') {
+        if ($this->db_name === '') {
             throw new RuntimeException('Missing required environment variable: DB_NAME');
         }
 
@@ -55,13 +55,17 @@ class PostCodeMariaDB extends PostCodeBase
      */
     public function checkTable() : bool
     {
-        $sql = 'SELECT COUNT(*) FROM information_schema.tables '
-            . 'WHERE table_schema = \'' . $this->db_name . '\' '
-            . 'AND table_name = \'' . self::TABLE_NAME . '\';';
-        $stmt = $this->pdo->query($sql);
-        $found = (bool) ($stmt->rowCount() >= 1);
+        $stmt = $this->pdo->prepare(
+            'SELECT COUNT(*) FROM information_schema.tables '
+            . 'WHERE table_schema = :table_schema AND table_name = :table_name',
+        );
+        $stmt->execute([
+            'table_schema' => $this->db_name,
+            'table_name' => self::TABLE_NAME,
+        ]);
+        $result = (int) $stmt->fetchColumn() > 0;
         unset($stmt);
-        return $found;
+        return (bool) $result;
     }
 
     /**

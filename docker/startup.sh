@@ -24,6 +24,7 @@ if [ $status -ne 0 ]; then
   exit $status
 fi
 echo "Started MariaDB/MySQL succesfully"
+/tmp/set_db_perms.sh
 /tmp/restore.sh
 
 # Start the second process
