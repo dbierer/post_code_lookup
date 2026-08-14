@@ -3,7 +3,7 @@
 export PHP_VER="8.4"
 export HOST_NAME=postcode.local
 export HOST_URL=http://postcode.local/
-export HOME_DIR=/home/ubuntu
+export HOME_DIR=/home/vagrant
 export DB_USR=db_admin
 export DB_PWD=db_password
 export DB_NAM=post_code_lookup

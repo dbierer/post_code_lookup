@@ -16,6 +16,9 @@ RUN \
     echo "Adding/enabling PHP extensions ..." && \
     /tmp/install_php_ext.sh
 RUN \
+    echo "Installing Mariadb (MySQL open source equivalent) ..." && \
+    apt-get install -y mysql-server
+RUN \
     echo "Installing Adminer (phpMyAdmin equivalent) ..." && \
     /tmp/install_adminer.sh
 WORKDIR /home/vagrant
