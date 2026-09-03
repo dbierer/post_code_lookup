@@ -2,7 +2,7 @@
 return [
     'db' => [
         // 'mariadb' to use PostCode, 'sqlite' to use PostCodeSQLite, 'pgsql' to use PostCodePgSQL.
-        'DRIVER' => 'mariadb',   // mariadb | sqlite | pgsql
+        'DRIVER' => 'sqlite',   // mariadb | sqlite | pgsql
         'sqlite' => [
             'DB_NAME' => 'post_code_lookup',
             'DB_HOST' => '127.0.0.1',
