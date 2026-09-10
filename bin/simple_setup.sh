@@ -3,9 +3,13 @@ if [[ ! "$USER" = "root" ]]; then
     echo "You need to run this as root!"
     exit 1
 fi
+if [[ "$1" = "" ]]; then
+    echo "Usage: simple_setup.sh NAME_OF_USER"
+    exit 1
+fi
 cp docker/* /tmp/
 chmod +x /tmp/*.sh
-. /tmp/secrets.sh
+. /tmp/secrets.sh $1
 echo "Installing misc tools ..."
 apt-get update
 apt-get install -y net-tools zip unzip apt-utils tree

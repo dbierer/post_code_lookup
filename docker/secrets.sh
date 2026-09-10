@@ -1,9 +1,10 @@
 #!/bin/bash
 # NOTE: this is for demo only!
+# $1 == name of user
 export PHP_VER="8.4"
 export HOST_NAME=postcode.local
 export HOST_URL=http://postcode.local/
-export HOME_DIR=/home/vagrant
+export HOME_DIR=/home/$1
 export DB_USR=admin
 export DB_PWD=password
 export DB_NAM=post_code_lookup
