@@ -1,5 +1,5 @@
 #!/usr/bin/sh
-. /tmp/secrets.sh
+. /tmp/secrets.sh $1
 echo "Installing PHP extensions ..."
 /usr/local/bin/zendphpctl ext install gd
 /usr/local/bin/zendphpctl ext install simplexml

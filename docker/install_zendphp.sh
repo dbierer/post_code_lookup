@@ -1,5 +1,5 @@
 #!/usr/bin/sh
-. /tmp/secrets.sh
+. /tmp/secrets.sh $1
 echo "Installing ZendPHP ..."
 cd /tmp
 curl -L https://repos.zend.com/zendphp/zendphpctl -o zendphpctl
