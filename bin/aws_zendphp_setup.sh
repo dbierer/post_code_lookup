@@ -7,7 +7,7 @@ cp docker/* /tmp/
 chmod +x /tmp/*.sh
 . /tmp/secrets.sh
 echo "Installing required utilities ..."
-apt install zip
+apt install -y zip
 echo "Adding/enabling PHP extensions ..."
 /usr/local/bin/zendphpctl ext-install sqlite3
 /usr/local/bin/zendphpctl ext-install pdo_sqlite
