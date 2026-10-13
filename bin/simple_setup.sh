@@ -35,4 +35,3 @@ echo "Restarting nginx and PHP-FPM ..."
 echo "If you want to add additional countries to the postcode database, proceed as follows:"
 echo "    /var/www/demo/src/import_postcode.sh ISO2" 
 echo "    -- where 'ISO2' is the uppercase 2-digit country code"
-
