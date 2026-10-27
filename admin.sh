@@ -1,5 +1,5 @@
 #!/bin/bash
-. ./docker/secrets.sh
+. ./docker/secrets.sh `whoami`
 DIR=`pwd`
 export USAGE="Usage: admin.sh up|down|build|shell|ls"
 # If you're using Docker, change these two env vars

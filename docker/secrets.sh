@@ -1,10 +1,14 @@
 #!/bin/bash
 # NOTE: this is for demo only!
 # $1 == name of user
+export USER=$1
+if [[ "$USER" = "" ]]; then
+    export USER=vagrant
+fi
 export PHP_VER="8.4"
 export HOST_NAME=postcode.local
 export HOST_URL=http://postcode.local/
-export HOME_DIR=/home/$1
+export HOME_DIR=/home/$USER
 export DB_USR=admin
 export DB_PWD=password
 export DB_NAM=post_code_lookup

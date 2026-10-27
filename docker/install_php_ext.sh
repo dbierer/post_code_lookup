@@ -11,5 +11,4 @@ echo "Installing PHP extensions ..."
 /usr/local/bin/zendphpctl ext install mbstring
 /usr/local/bin/zendphpctl ext install zip
 /usr/local/bin/zendphpctl ext install sqlite3
-/usr/local/bin/zendphpctl ext install pdo_sqlite
 
